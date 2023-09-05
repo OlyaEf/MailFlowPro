@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "mailflowpro"
+version = "0.1.0"
+description = ""
+authors = ["OlyaEf <efimovskikh@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.4"
+pillow = "^10.0.0"
+python-dotenv = "^1.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+psycopg2-binary = "^2.9.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
