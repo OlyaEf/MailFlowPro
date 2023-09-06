@@ -1,5 +1,7 @@
 from django import forms
-from .models import Client, MailingLog, Message, MailingSettings
+from .models.mailing import Message, MailingSettings
+from .models.mailing_log import MailingLog
+from .models.client import Client
 
 
 class StyleFormMixin:

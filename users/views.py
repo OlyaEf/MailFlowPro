@@ -20,10 +20,10 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         new_user = form.save()
-        new_user.verification_key = secrets.randbelow(1_000_000)
+        new_user.email_verification_token = secrets.randbelow(1_000_000)
         new_user.save()
 
-        token = urlsafe_base64_encode(force_bytes(new_user.verification_key))
+        token = urlsafe_base64_encode(force_bytes(new_user.email_verification_token))
         verification_url = reverse('users:verify', kwargs={'token': token})
         send_mail(
             subject='Регистрация на Портале.',
@@ -37,8 +37,8 @@ class RegisterView(CreateView):
 def verify_email(request, token):
     try:
         user_verification_key = urlsafe_base64_decode(token).decode()
-        user = User.objects.get(verification_key=user_verification_key)
-        if int(user_verification_key) == user.verification_key:
+        user = User.objects.get(email_verification_token=user_verification_key)
+        if user_verification_key == user.email_verification_token:
             user.is_active = True
             user.save()
             return redirect('core:index')

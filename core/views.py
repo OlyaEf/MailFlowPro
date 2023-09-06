@@ -2,7 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from mailing.models import Client, MailingSettings, Message
+from mailing.models.client import Client
+from mailing.models.mailing import MailingSettings, Message
 
 
 class HomePageView(LoginRequiredMixin, TemplateView):

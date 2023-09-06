@@ -10,7 +10,7 @@ class BlogPost(models.Model):
     image = models.ImageField(upload_to='blog_images/', **NULLABLE)
     views_count = models.PositiveIntegerField(default=0)
     publication_date = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE)
 
     def __str__(self):
         return f'{self.title} created:{self.publication_date}'
