@@ -6,8 +6,8 @@ from mailing.models.client import Client
 
 
 class Message(models.Model):
-    subject = models.CharField(max_length=200, verbose_name='тема', default='No subject')
-    body = models.TextField(verbose_name='текст письма')
+    subject = models.CharField(max_length=200, verbose_name='тема', **NULLABLE)
+    body = models.TextField(verbose_name='текст письма', **NULLABLE)
 
     def __str__(self):
         return f' Тема: {self.subject}. Содержание: {self.body}'
@@ -38,7 +38,7 @@ class MailingSettings(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, max_length=150, verbose_name='пользователь')  # Связь многие к одному с моделью User
 
     # Добавляем поле для связи с сообщением
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='сообщение', null=True, blank=True)
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='сообщение', **NULLABLE)
     is_active = models.BooleanField(default=True, verbose_name='активно')
 
     def __str__(self):

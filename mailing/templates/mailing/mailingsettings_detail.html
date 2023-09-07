@@ -4,33 +4,27 @@
         <div class="py-5 text-center">
             <h2>Детали Рассылки</h2>
         </div>
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <dl class="row">
-                    <dt class="col-sm-4">Время рассылки:</dt>
-                    <dd class="col-sm-8">{{ object.sending_time }}</dd>
+        <div class="col-md-7 col-lg-8">
+            <dl class="row">
+                <dt class="col-sm-3">Время рассылки:</dt>
+                <dd class="col-sm-9">{{ object.sending_time }}</dd>
 
-                    <dt class="col-sm-4">Периодичность:</dt>
-                    <dd class="col-sm-8">{{ object.get_frequency_display }}</dd>
+                <dt class="col-sm-3">Периодичность:</dt>
+                <dd class="col-sm-9">{{ object.frequency }}</dd>
 
-                    <dt class="col-sm-4">Статус:</dt>
-                    <dd class="col-sm-8">{{ object.get_status_display }}</dd>
+                <dt class="col-sm-3">Статус:</dt>
+                <dd class="col-sm-9">{{ object.status }}</dd>
 
-                    <dt class="col-sm-4">Клиенты:</dt>
-                    <dd class="col-sm-8">
-                        {% for client in object.client.all %}
-                            {{ client.full_name }} ({{ client.email }})<br>
-                        {% endfor %}
-                    </dd>
+                <!-- Другие поля рассылки -->
 
-                    <dt class="col-sm-4">Пользователь:</dt>
-                    <dd class="col-sm-8">{{ object.user }}</dd>
+                {% if object.status == 'completed' %}
+                <dt class="col-sm-3">Тема сообщения:</dt>
+                <dd class="col-sm-9">{{ object.message.subject }}</dd>
 
-                    <dt class="col-sm-4">Сообщение:</dt>
-                    <dd class="col-sm-8">{{ object.message }}</dd>
-                </dl>
-                <a href="{% url 'mailing:mailingsettings_list' %}" class="btn btn-primary">Назад к списку рассылок</a>
-            </div>
+                <dt class="col-sm-3">Текст сообщения:</dt>
+                <dd class="col-sm-9">{{ object.message.body }}</dd>
+                {% endif %}
+            </dl>
         </div>
     </div>
 {% endblock %}

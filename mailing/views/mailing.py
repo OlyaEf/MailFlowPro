@@ -1,22 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import Http404
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
-from mailing.forms import MailingSettingsForm
-from mailing.models.mailing import MailingSettings
-
-
-class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
-    model = MailingSettings
-    form_class = MailingSettingsForm
-    template_name = 'mailingsettings_form.html '
-    success_url = reverse_lazy('mailing:mailing_settings_list')
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        response = super().form_valid(form)
-        return response
+from mailing.forms import MailingSettingsForm, MessageFormSet
+from mailing.models.mailing import MailingSettings, Message
 
 
 class MailingSettingsListView(LoginRequiredMixin, ListView):
@@ -39,6 +28,10 @@ class MailingSettingsListView(LoginRequiredMixin, ListView):
 class MailingSettingsDetailView(LoginRequiredMixin, DetailView):
     model = MailingSettings
     template_name = 'mailingsettings_detail.html'
+
+    def get_object(self, queryset=None):
+        # Вместо get_object_or_404 вы можете использовать другие методы получения объекта
+        return get_object_or_404(MailingSettings, pk=self.kwargs['pk'])
 
 
 class MailingSettingsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -73,3 +66,30 @@ class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
             return self.success_url
         else:
             raise Http404()
+
+
+class MailingSettingsCreateView(CreateView):
+    model = MailingSettings
+    form_class = MailingSettingsForm
+    success_url = reverse_lazy('mailing:mailingsettings_detail')
+
+    def form_valid(self, form):
+        # Сохраняем форму рассылки
+        form.instance.user = self.request.user
+
+        # Создаем экземпляр формсета для сообщений
+        message_formset = MessageFormSet(self.request.POST)
+
+        if message_formset.is_valid():
+            # Если формсет сообщений валиден, сохраняем сообщения
+            messages = message_formset.save(commit=False)
+            for message in messages:
+                message.save()
+
+            # Привязываем сообщения к рассылке
+            form.instance.message.set(messages)
+            return super().form_valid(form)
+        else:
+            # Если формсет сообщений не валиден, отображаем ошибки
+            return render(self.request, self.template_name, {'form': form, 'message_formset': message_formset})
+
