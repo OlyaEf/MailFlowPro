@@ -39,6 +39,7 @@ class MailingSettings(models.Model):
 
     # Добавляем поле для связи с сообщением
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='сообщение', null=True, blank=True)
+    is_active = models.BooleanField(default=True, verbose_name='активно')
 
     def __str__(self):
         return (f"Сообщение отправлено для {self.client.email}, "

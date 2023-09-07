@@ -10,7 +10,7 @@ from mailing.models.mailing import MailingSettings
 class MailingSettingsCreateView(LoginRequiredMixin, CreateView):
     model = MailingSettings
     form_class = MailingSettingsForm
-    template_name = 'mailingsettings_form.html'
+    template_name = 'mailingsettings_form.html '
     success_url = reverse_lazy('mailing:mailing_settings_list')
 
     def form_valid(self, form):
@@ -28,6 +28,12 @@ class MailingSettingsListView(LoginRequiredMixin, ListView):
             return MailingSettings.objects.all()
         queryset = MailingSettings.objects.filter(user=self.request.user, is_active=True)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["count_mailings"] = self.object_list.count()
+        context["active_count"] = self.object_list.filter(status="started").count()
+        return context
 
 
 class MailingSettingsDetailView(LoginRequiredMixin, DetailView):
