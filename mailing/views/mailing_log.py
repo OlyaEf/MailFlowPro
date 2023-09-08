@@ -5,7 +5,6 @@ from mailing.models.mailing_log import MailingLog
 
 class MailingLogListView(ListView):
     model = MailingLog
-    template_name = 'mailinglog_list.html'
     context_object_name = 'mailing_logs'
 
     def get_queryset(self):

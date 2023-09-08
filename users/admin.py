@@ -23,4 +23,3 @@ class UserAdmin(admin.ModelAdmin):
         if obj is not None and request.user.has_perm('users.can_change_user_is_active'):
             return True
         return super().has_change_permission(request, obj)
-
