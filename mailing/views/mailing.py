@@ -37,7 +37,6 @@ class MailingSettingsDetailView(LoginRequiredMixin, DetailView):
 class MailingSettingsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = MailingSettings
     form_class = MailingSettingsForm
-    template_name = 'mailingsettings_form.html'
     success_url = reverse_lazy('mailing:mailingsettings_list')
     permission_required = 'mailing.change_mailingsettings'
 
@@ -50,7 +49,6 @@ class MailingSettingsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Upd
 
 class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingSettings
-    template_name = 'mailingsettings_confirm_delete.html'
     success_url = reverse_lazy('mailing:mailingsettings_list')
 
     def get_object(self, queryset=None):
@@ -71,7 +69,7 @@ class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
 class MailingSettingsCreateView(CreateView):
     model = MailingSettings
     form_class = MailingSettingsForm
-    success_url = reverse_lazy('mailing:mailingsettings_detail')
+    success_url = reverse_lazy('mailing:mailingsettings_list')
 
     def form_valid(self, form):
         # Сохраняем форму рассылки
@@ -88,8 +86,6 @@ class MailingSettingsCreateView(CreateView):
 
             # Привязываем сообщения к рассылке
             form.instance.message.set(messages)
-            return super().form_valid(form)
-        else:
-            # Если формсет сообщений не валиден, отображаем ошибки
-            return render(self.request, self.template_name, {'form': form, 'message_formset': message_formset})
+        return super().form_valid(form)
+
 

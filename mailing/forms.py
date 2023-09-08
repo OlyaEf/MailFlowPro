@@ -34,7 +34,8 @@ class MessageForm(StyleFormMixin, forms.ModelForm):
 class MailingSettingsForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = MailingSettings
-        fields = ['sending_time', 'frequency', 'status', 'user', 'is_active']  # Включите поля, которые вы хотите отображать
+        fields = '__all__'
+        # fields = ['sending_time', 'frequency', 'status', 'user', 'is_active']  # Включите поля, которые вы хотите отображать
 
     message_subject = forms.CharField(max_length=200, required=True, label='Тема сообщения')
     message_body = forms.CharField(widget=forms.Textarea, required=True, label='Текст сообщения')
