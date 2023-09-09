@@ -13,7 +13,8 @@ class UserAdmin(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
         if request.user.is_superuser:
             return ('email', 'password', 'avatar', 'phone', 'country', 'is_active', 'is_staff', 'is_superuser',
-                    'email_verification_token', 'last_login', 'date_joined')
+                    'email_verification_token', 'last_login', 'date_joined', 'groups',)
+
         elif obj:
             return ('is_active',)
         else:

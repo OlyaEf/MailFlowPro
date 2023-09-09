@@ -6,6 +6,6 @@ app_name = CoreConfig.name
 
 urlpatterns = [
     path('', GuestPageView.as_view(), name='guest'),
-    path('home/', HomePageView.as_view(), name='index'),
+    path('core/', HomePageView.as_view(), name='index'),
     path('contacts/', contacts_view, name='contacts'),
 ]
