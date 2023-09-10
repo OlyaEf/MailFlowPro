@@ -2,6 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_control
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from mailing.forms import MailingSettingsForm, MessageFormSet
@@ -49,7 +51,7 @@ class MailingSettingsUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Upd
 
 class MailingSettingsDeleteView(LoginRequiredMixin, DeleteView):
     model = MailingSettings
-    success_url = reverse_lazy('mailing:mailingsettings_list')
+    success_url = reverse_lazy('home:index')
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
