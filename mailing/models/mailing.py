@@ -3,6 +3,7 @@ from django.db import models
 
 from constants import NULLABLE
 from mailing.models.client import Client
+from django.utils import timezone
 
 
 class Message(models.Model):
@@ -29,6 +30,8 @@ class MailingSettings(models.Model):
         ('started', 'Started'),
         ('completed', 'Completed'),
     ]
+
+    sending_date = models.DateTimeField(verbose_name='дата рассылки', default=timezone.now)
 
     sending_time = models.TimeField(verbose_name='время рассылки')
     frequency = models.CharField(max_length=10, choices=FREQUENCY_CHOICES, verbose_name='периодичность')
