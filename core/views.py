@@ -22,9 +22,9 @@ class HomePageView(LoginRequiredMixin, TemplateView):
         context['mailing'] = MailingSettings.objects.filter(user=self.request.user)
 
         all_blogs = BlogPost.objects.all()
-        random_blogs = sample(list(all_blogs), 3)
+        # random_blogs = sample(list(all_blogs), 3)
 
-        context['blog'] = random_blogs
+        # context['blog'] = random_blogs
         return context
 
 
