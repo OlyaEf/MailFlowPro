@@ -37,7 +37,7 @@ class MailingSettings(models.Model):
     frequency = models.CharField(max_length=10, choices=FREQUENCY_CHOICES, verbose_name='периодичность')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='created', verbose_name='статус')
 
-    client = models.ManyToManyField(Client, max_length=150, verbose_name='клиент')  # Связь многие ко многим с моделью Client
+    client = models.ManyToManyField(Client, verbose_name='клиент')  # Связь многие ко многим с моделью Client
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, max_length=150, verbose_name='пользователь')  # Связь многие к одному с моделью User
 
     # Добавляем поле для связи с сообщением
@@ -45,8 +45,11 @@ class MailingSettings(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='активно')
 
     def __str__(self):
-        return (f"Сообщение отправлено для {self.client.email}, "
-                f"периодичность рассылки {self.frequency}, статус {self.status}")
+        clients = ", ".join([client.email for client in self.client.all()])
+        return (
+            f"Сообщение отправлено для {clients}, "
+            f"периодичность рассылки {self.get_frequency_display()}, статус {self.get_status_display()}"
+        )
 
     class Meta:
         verbose_name = 'рассылка'

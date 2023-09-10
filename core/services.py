@@ -8,6 +8,6 @@ def get_cached_clients(user):
     clients_list = cache.get(key)
 
     if clients_list is None:
-        clients_list = Client.objects.filter(owner=user)
+        clients_list = Client.objects.filter(user=user)
         cache.set(key, clients_list, 60 * 15)
     return clients_list
