@@ -1,4 +1,4 @@
-# IMailingService
+# MailFlowPRO
 
 Сервис для создания рассылок для ваших клиентов.
 
